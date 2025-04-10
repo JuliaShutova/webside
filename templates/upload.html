@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Анализатор текста</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --soft-blue: #3a7be0;
+            --soft-blue-dark: #2a6fd6;
+            --bg-light: #f8f9fa;
+            --text-light: #212529;
+            --bg-dark: #212529;
+            --text-dark: #f8f9fa;
+            --card-dark: #2c3034;
+            --input-dark: #3d4144;
+        }
+
+        body {
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-light);
+        }
+
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Основные цвета для кнопок и заголовков */
+        .btn-primary, .bg-primary, .card-header.bg-primary {
+            background-color: var(--soft-blue) !important;
+            border-color: var(--soft-blue) !important;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--soft-blue-dark) !important;
+            border-color: var(--soft-blue-dark) !important;
+        }
+
+        /* Темная тема */
+        .dark-mode .card {
+            background-color: var(--card-dark);
+            border-color: #444;
+        }
+
+        .dark-mode .form-control {
+            background-color: var(--input-dark);
+            color: var(--text-dark);
+            border-color: #555;
+        }
+
+        .dark-mode .form-control:focus {
+            background-color: #4d5154;
+            color: var(--text-dark);
+        }
+
+        .dark-mode .form-label {
+            color: var(--text-dark) !important;
+        }
+
+        .dark-mode .input-group-text {
+            background-color: var(--input-dark);
+            color: var(--text-dark);
+            border-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="h4 mb-0">Анализатор частоты слов</h1>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                <label class="form-check-label" for="darkModeToggle">Тёмный режим</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" id="uploadForm">
+                            <div class="mb-3">
+                                <label for="fileInput" class="form-label">Выберите текстовый файл (.txt)</label>
+                                <input class="form-control" type="file" id="fileInput" name="file" accept=".txt" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <span id="buttonText">Анализировать</span>
+                                <span id="buttonSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+
+            if (isDarkMode) {
+                darkModeToggle.checked = true;
+                document.body.classList.add('dark-mode');
+            }
+
+
+            darkModeToggle.addEventListener('change', function() {
+                const isDark = this.checked;
+                document.body.classList.toggle('dark-mode', isDark);
+                localStorage.setItem('darkMode', isDark);
+            });
+
+
+            const form = document.getElementById('uploadForm');
+            form.addEventListener('submit', function() {
+                const btn = document.getElementById('submitBtn');
+                const btnText = document.getElementById('buttonText');
+                const spinner = document.getElementById('buttonSpinner');
+
+                btn.disabled = true;
+                btnText.textContent = 'Обработка...';
+                spinner.classList.remove('d-none');
+            });
+        });
+    </script>
+</body>
+</html>
